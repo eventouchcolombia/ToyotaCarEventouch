@@ -76,14 +76,14 @@ function startGame(event) {
   music.loop = true;
 
   gameAreaTexts.forEach(text => text.classList.add('hide'));
-  gameArea.style.outline = "1px dashed #666";
+  gameArea.style.outline = "10px dashed #666";
   gameArea.style.minHeight = Math.floor((document.documentElement.clientHeight - HEIGHT_ELEM) / HEIGHT_ELEM) * HEIGHT_ELEM + 'px';
 
   for (let i = 0; i < getQuantityElements(HEIGHT_ELEM); i++) {
     const line = document.createElement(`div`);
     line.classList.add('line');
     line.style.top = (i * HEIGHT_ELEM) + 'px';
-    line.style.height = (HEIGHT_ELEM / 2) + 'px';
+    line.style.height = '200px';
     line.y = i * HEIGHT_ELEM;
     gameArea.append(line);
   }
@@ -118,7 +118,13 @@ function playGame() {
     moveRoad();
     moveEnemy();
     setting.score += setting.speed;
-    score.innerHTML = `<b>SCORE: ${setting.score}</b>`;
+
+// Aumentar velocidad cada 1000 puntos
+if (setting.score % 200 === 0 && setting.speed < 20) {
+  setting.speed += 0.5;
+}
+   score.innerHTML = `<b>SCORE: ${setting.score}</b> <br><b>SPEED: ${setting.speed.toFixed(1)}</b>`;
+
 
     if ((keys.ArrowLeft || keys.a) && setting.x > 0) {
       setting.x -= setting.speed;
@@ -194,7 +200,9 @@ function moveEnemy() {
 // Show Modal
 function showModal() {
   modal.classList.add('show-modal');
-  modalContentText.innerHTML = `Result: <span class="modal-content__score">${setting.score}</span>`;
+  modalContentText.innerHTML = `
+    <span>Result: <span class="modal-content__score">${setting.score}</span></span>
+  `;
 }
 
 // Modal Event Listeners
